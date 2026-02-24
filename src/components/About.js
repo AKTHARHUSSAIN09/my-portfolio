@@ -1,90 +1,252 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import ScrollReveal from './ScrollReveal';
 
 export default function About() {
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const [skillsVisible, setSkillsVisible] = useState(false);
+  const skillsRef = useRef(null);
+
+  useEffect(() => {
+    const el = skillsRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSkillsVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.2 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const skills = [
-    { category: 'Languages', items: ['C++', 'Python', 'Java', 'JavaScript'] },
-    { category: 'Frontend', items: ['React', 'Tailwind CSS', 'HTML5', 'CSS3'] },
-    { category: 'Backend', items: ['Node.js', 'Express', 'Databases', 'REST APIs'] },
-    { category: 'Specializations', items: ['DSA', 'AIML', 'Web Dev', 'Problem Solving'] }
+    {
+      category: 'Languages', icon: '⌨️',
+      items: [
+        { name: 'C++', level: 85 },
+        { name: 'Python', level: 80 },
+        { name: 'Java', level: 75 },
+        { name: 'JavaScript', level: 90 },
+      ],
+    },
+    {
+      category: 'Frontend', icon: '🎨',
+      items: [
+        { name: 'React', level: 88 },
+        { name: 'Tailwind CSS', level: 85 },
+        { name: 'HTML5', level: 95 },
+        { name: 'CSS3', level: 90 },
+      ],
+    },
+    {
+      category: 'Backend', icon: '⚙️',
+      items: [
+        { name: 'Node.js', level: 75 },
+        { name: 'Express', level: 72 },
+        { name: 'Databases', level: 70 },
+        { name: 'REST APIs', level: 80 },
+      ],
+    },
+    {
+      category: 'Specialisations', icon: '🧠',
+      items: [
+        { name: 'DSA', level: 82 },
+        { name: 'AI/ML', level: 70 },
+        { name: 'Web Dev', level: 88 },
+        { name: 'Problem Solving', level: 85 },
+      ],
+    },
+  ];
+
+  const stats = [
+    { value: '5+', label: 'Projects Completed' },
+    { value: '4+', label: 'Languages Known' },
+    { value: '1+', label: 'Years Experience' },
+    { value: 'RMK', label: 'Engineering College' },
+  ];
+
+  const journey = [
+    {
+      period: '2023 — Present',
+      title: 'B.E. Computer Science & Engineering',
+      place: 'RMK Engineering College, Chennai',
+      description:
+        'Specializing in Data Structures, Algorithms, AI/ML, and Full Stack Web Development. Building real-world projects and solving complex computational problems.',
+    },
+    {
+      period: '2021 — 2023',
+      title: 'Higher Secondary Education',
+      place: 'HSC — Mathematics & Computer Science',
+      description:
+        'Developed strong analytical and problem-solving skills with a focus on Mathematics, Physics, and Computer Science.',
+    },
   ];
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-slate-950 via-blue-950/50 to-slate-950 py-20 px-4 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-cyan-500/10 rounded-full blur-3xl -z-10 animate-pulse"></div>
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-purple-500/15 to-pink-500/10 rounded-full blur-3xl -z-10 animate-pulse animation-delay-2000"></div>
+    <section
+      id="about"
+      className="py-24 px-4 relative overflow-hidden"
+      style={{ background: 'linear-gradient(170deg, #f5f7ff 0%, #edf0fb 60%, #f0f4ff 100%)' }}
+    >
+      {/* Dark navy diagonal accent */}
+      <div
+        aria-hidden="true"
+        className="absolute top-0 left-0 w-80 h-80 pointer-events-none opacity-[0.07]"
+        style={{ background: 'radial-gradient(circle at 10% 10%, #111827 0%, transparent 70%)' }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute top-0 right-0 w-[500px] h-[500px] opacity-30 pointer-events-none"
+        style={{ background: 'radial-gradient(circle at 80% 20%, #dde6ff 0%, transparent 60%)', filter: 'blur(40px)' }}
+      />
 
-      <div className="container">
-        <div className="text-center mb-20">
-          <h2 className="text-5xl md:text-7xl font-black mb-6 bg-gradient-to-r from-cyan-300 via-blue-400 to-teal-400 bg-clip-text text-transparent tracking-tight">
-            About Me
-          </h2>
-          <div className="w-32 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 mx-auto rounded-full"></div>
-        </div>
+      <div className="container relative z-10">
+        {/* Section header */}
+        <ScrollReveal>
+          <div className="text-center mb-16">
+            <div className="section-label">About Me</div>
+            <h2 className="text-4xl md:text-5xl font-black" style={{ color: '#0e1530' }}>
+              Crafting Digital <span className="gradient-text">Experiences</span>
+            </h2>
+            <div className="section-divider" />
+          </div>
+        </ScrollReveal>
 
-        <div className="grid md:grid-cols-2 gap-12 mb-16 items-center">
-          <div className="flex justify-center">
-            <div className="relative w-full max-w-[18rem] sm:max-w-xs">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur-2xl opacity-50"></div>
-              <img
-                src="/profile.jpg"
-                alt="AKTHAR HUSSAIN S"
-                className="relative w-full h-auto aspect-[3/4] object-cover rounded-2xl border-2 border-cyan-400/50 shadow-2xl"
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImageLoaded(false)}
-                style={{ display: imageLoaded ? 'block' : 'none' }}
-              />
-              {!imageLoaded && (
-                <div className="relative w-full h-auto aspect-[3/4] rounded-2xl border-2 border-cyan-400/50 shadow-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 flex items-center justify-center">
-                  <p className="text-gray-400 text-center px-4 text-sm">
-                    📸 Profile Picture<br />
-                    <span className="text-xs text-gray-500">Place profile.jpg in public folder</span>
-                  </p>
+        {/* Bio + Photo */}
+        <div className="grid md:grid-cols-2 gap-14 items-center mb-20">
+          {/* Profile Photo */}
+          <ScrollReveal direction="left">
+            <div className="flex justify-center">
+              <div className="profile-photo-wrap">
+                {!imageError ? (
+                  <img
+                    src="/profile.jpg"
+                    alt="Akthar Hussain S"
+                    className="profile-img"
+                    onError={() => setImageError(true)}
+                  />
+                ) : (
+                  <div className="profile-placeholder">
+                    <div
+                      className="w-20 h-20 rounded-2xl flex items-center justify-center text-white text-3xl font-black shadow-lg"
+                      style={{ background: 'linear-gradient(135deg,#4f46e5,#0ea5e9)' }}
+                    >
+                      AH
+                    </div>
+                    <p className="text-sm text-center px-4 mt-3" style={{ color: '#8b9eca' }}>
+                      Place <code className="text-indigo-500 text-xs">profile.jpg</code> in{' '}
+                      <code className="text-indigo-500 text-xs">/public</code>
+                    </p>
+                  </div>
+                )}
+                <div className="open-to-work-badge">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse inline-block flex-shrink-0" />
+                  <span className="text-sm font-semibold" style={{ color: '#0e1530' }}>Open to Work</span>
                 </div>
-              )}
+              </div>
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div>
-            <p className="text-gray-300 text-lg leading-relaxed mb-6">
-              I'm a Computer Science Undergraduate at <span className="text-cyan-400 font-semibold">RMK Engineering College</span> with a passion for building scalable web applications and solving complex problems through elegant code.
-            </p>
-            <p className="text-gray-300 text-lg leading-relaxed">
-              Currently mastering <span className="text-cyan-400 font-semibold">C++, Python, and Java</span> while developing strong foundations in DSA and AIML. I believe in continuous learning and creating projects that make a real impact.
-            </p>
-          </div>
+          {/* Bio text */}
+          <ScrollReveal direction="right" delay={200}>
+            <div>
+              <h3 className="text-2xl font-bold mb-5" style={{ color: '#0e1530' }}>
+                Passionate about turning ideas into <span className="gradient-text">elegant code</span>
+              </h3>
+              <p className="leading-relaxed mb-4" style={{ color: '#4a5680' }}>
+                I'm a Computer Science undergraduate at{' '}
+                <span className="text-indigo-600 font-semibold">RMK Engineering College</span> with a passion for
+                building scalable web applications and solving complex problems through clean, maintainable code.
+              </p>
+              <p className="leading-relaxed mb-8" style={{ color: '#4a5680' }}>
+                Currently mastering{' '}
+                <span className="text-indigo-600 font-semibold">C++, Python, and Java</span> while building a
+                strong foundation in Data Structures &amp; Algorithms and AI/ML.
+              </p>
+
+              {/* Stats mini-grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                {stats.map(({ value, label }) => (
+                  <div key={label} className="stat-card text-center">
+                    <div className="text-2xl font-black gradient-text">{value}</div>
+                    <div className="text-xs mt-1 font-medium leading-tight" style={{ color: '#5a6a8a' }}>{label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
+        {/* Skills */}
+        <ScrollReveal>
+          <div className="text-center mb-10">
+            <h3 className="text-2xl font-bold" style={{ color: '#0e1530' }}>
+              Technical <span className="gradient-text">Skills</span>
+            </h3>
+          </div>
+        </ScrollReveal>
+
+        <div ref={skillsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {skills.map((skill, idx) => (
-            <div key={idx} className="group p-8 bg-gradient-to-br from-cyan-500/15 via-blue-500/10 to-transparent border border-cyan-400/30 rounded-2xl backdrop-blur-md hover:border-cyan-300/80 transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20 hover:bg-gradient-to-br hover:from-cyan-500/25 hover:via-blue-500/15 hover:to-transparent">
-              <h4 className="text-cyan-300 font-bold mb-4 text-center text-lg group-hover:text-cyan-200 transition-colors">{skill.category}</h4>
-              <ul className="space-y-3">
-                {skill.items.map((item, i) => (
-                  <li key={i} className="text-gray-300 text-sm flex items-center group-hover:text-gray-100 transition-colors">
-                    <span className="w-2 h-2 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full mr-3 group-hover:scale-125 transition-transform"></span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ScrollReveal key={idx} delay={idx * 100} className="h-full">
+              <div className="skill-card h-full">
+                <div className="skill-card-header">
+                  <span className="skill-icon">{skill.icon}</span>
+                  <h4 className="font-bold text-sm" style={{ color: '#0e1530' }}>{skill.category}</h4>
+                </div>
+                <ul className="space-y-4">
+                  {skill.items.map((item) => (
+                    <li key={item.name}>
+                      <div className="flex justify-between mb-1.5">
+                        <span className="text-sm font-medium" style={{ color: '#4a5680' }}>{item.name}</span>
+                        <span className="text-xs font-semibold text-indigo-500">{item.level}%</span>
+                      </div>
+                      <div className="progress-track">
+                        <div
+                          className="progress-bar"
+                          style={{
+                            width: skillsVisible ? `${item.level}%` : '0%',
+                            transition: 'width 1s cubic-bezier(.4,0,.2,1) 0.3s',
+                          }}
+                        />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </ScrollReveal>
           ))}
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="group p-10 bg-gradient-to-br from-cyan-500/15 to-blue-500/10 border border-cyan-400/30 rounded-2xl text-center hover:border-cyan-300/80 hover:shadow-2xl hover:shadow-cyan-500/20 hover:transform hover:scale-105 transition-all duration-300 backdrop-blur-sm">
-            <div className="text-5xl font-black bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent mb-4 group-hover:scale-110 transition-transform duration-300">3+</div>
-            <p className="text-gray-200 font-bold text-lg group-hover:text-cyan-300 transition-colors">Languages</p>
+        {/* Journey / Education */}
+        <ScrollReveal>
+          <div className="text-center mb-10 mt-20">
+            <h3 className="text-2xl font-bold" style={{ color: '#0e1530' }}>
+              My <span className="gradient-text">Journey</span>
+            </h3>
+            <div className="section-divider" />
           </div>
-          <div className="group p-10 bg-gradient-to-br from-cyan-500/15 to-blue-500/10 border border-cyan-400/30 rounded-2xl text-center hover:border-cyan-300/80 hover:shadow-2xl hover:shadow-cyan-500/20 hover:transform hover:scale-105 transition-all duration-300 backdrop-blur-sm">
-            <div className="text-5xl font-black bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent mb-4 group-hover:scale-110 transition-transform duration-300">15+</div>
-            <p className="text-gray-200 font-bold text-lg group-hover:text-cyan-300 transition-colors">Projects Completed</p>
+        </ScrollReveal>
+
+        <ScrollReveal direction="left">
+          <div className="max-w-2xl mx-auto">
+            <div className="timeline">
+              {journey.map((item, idx) => (
+                <div key={idx} className="timeline-item">
+                  <span className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--clr-accent)' }}>
+                    {item.period}
+                  </span>
+                  <h4 className="text-lg font-bold mt-1" style={{ color: '#0e1530' }}>{item.title}</h4>
+                  <p className="text-sm font-medium mt-0.5" style={{ color: 'var(--clr-accent-mid)' }}>{item.place}</p>
+                  <p className="text-sm mt-2 leading-relaxed" style={{ color: '#5a6a8a' }}>{item.description}</p>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="group p-10 bg-gradient-to-br from-cyan-500/15 to-blue-500/10 border border-cyan-400/30 rounded-2xl text-center hover:border-cyan-300/80 hover:shadow-2xl hover:shadow-cyan-500/20 hover:transform hover:scale-105 transition-all duration-300 backdrop-blur-sm">
-            <div className="text-5xl font-black bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent mb-4 group-hover:scale-110 transition-transform duration-300">RMK</div>
-            <p className="text-gray-200 font-bold text-lg group-hover:text-cyan-300 transition-colors">Engineering College</p>
-          </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   );
